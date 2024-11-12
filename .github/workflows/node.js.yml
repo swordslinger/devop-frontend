@@ -76,6 +76,9 @@ jobs:
       run: echo "CI=true" >> $GITHUB_ENV
     - name: start server 
       run: npm run preview &
+    - name: server status
+      run: | 
+        curl --silent --fail http://localhost:4173 || (echo "server not running" && exit 1)
     - name: wait for server
       run: npx wait-on http://localhost:4173
     - name: run cypress tests
