@@ -75,11 +75,19 @@ jobs:
     - name: set environment variables
       run: echo "CI=true" >> $GITHUB_ENV
     - name: start server 
-      run: |
-        npm run preview &> server.log &
-        tail -f server.log
+      run: | 
+        npm run preview &
+        sleep 10
+    #- name: wait for server
+     # run: npx wait-on http://10.1.0.148:4173/
     - name: wait for server
-      run: npx wait-on http://localhost:4173
+      run: |
+        for i in {1..10}; do
+        curl --silent - fail http://10.1.0.148:4173/ && exit 0 || echo "waiting"
+        sleep 10
+        done
+        echo "server exiting"
+        exit1
     - name: run cypress tests
       run: npm run test:e2e
       env:
