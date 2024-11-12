@@ -74,7 +74,10 @@ jobs:
         name: build
     - name: set environment variables
       run: echo "CI=true" >> $GITHUB_ENV
-    - name: start server and run cypress tests
-      run: npm run test:e2e
+    - name: start server
+      run: npm run preview
+    - name: Wait for server
+      run: npx wait-on http://localhost:4173
+    - name: run cypress tests 
       env:
         CI: true
