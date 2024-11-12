@@ -87,7 +87,7 @@ jobs:
         sleep 10
         done
         echo "server exiting"
-        exit1
+        exit 1
     - name: run cypress tests
       run: npm run test:e2e
       env:
