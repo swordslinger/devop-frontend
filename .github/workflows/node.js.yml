@@ -53,18 +53,17 @@ jobs:
         name: build
         path: dist
   
-  e2e-tests:
+  cypress-run:
 
 
     runs-on: ubuntu-22.04
     
-    needs: build
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: cypress run
-        uses: cypress-io/github-actions@v6
+        uses: cypress-io/github-action@v6
         with:
           build: npm run build
           start: npm start
