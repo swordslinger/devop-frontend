@@ -69,4 +69,3 @@ jobs:
           start: npm run preview
           wait-on: 'http://localhost:4173'
           wait-on-timeout: 120
-
