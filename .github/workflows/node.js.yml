@@ -74,7 +74,7 @@ jobs:
       - name: build
         run: npm run build
       - name: Start server
-        run: npx vue-cli-service serve dist
+        run: vue serve
       - name: wait for server
         run: npx wait-on http://localhost:4173
       - name: cypress run
