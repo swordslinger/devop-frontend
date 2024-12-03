@@ -80,6 +80,6 @@ jobs:
       - name: cypress run
         uses: cypress-io/github-action@v6
         with:
-          wait-on: 'http://localhost:3000'
+          wait-on: 'http://localhost:4173'
           wait-on-timeout: 120
           
