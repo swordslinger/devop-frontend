@@ -66,6 +66,6 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           build: npm run build
-          start: npm run preview
+          start: vue serve
           wait-on: 'http://localhost:4173'
           wait-on-timeout: 120
