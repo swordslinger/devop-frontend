@@ -73,5 +73,7 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           build: npm run build
+          start: npm run preview
           wait-on: 'http://localhost:4173'
           wait-on-timeout: 120
+          
