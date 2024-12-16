@@ -1,11 +1,13 @@
+/* eslint-disable */
 import { createRouter, createWebHashHistory } from 'vue-router'
-import HelloWorld from '@/components/HelloWorld.vue'
+import Register from '@/components/Register.vue'
+
 
 const routes = [
   {
-    path: "/",
-    name: "helloWorld",
-    component: HelloWorld
+    path: "/register",
+    name: "Register",
+    component: Register
   }
 ]
 
