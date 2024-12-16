@@ -1,4 +1,3 @@
-/* eslint-disable */
 <template>
   <Form @submit= "Register" :validation-schema="schema">
     <div>
@@ -22,20 +21,16 @@
 
     </div>
   </Form>
-  /* eslint-disable */
   <div v-if="message" :class="successful ? 'alert-success' : 'alert-danger'">
     {{ message }}
   </div>
 
 </template>
-/* eslint-disable */
+
 <script>
-/* eslint-disable */
 import { Form, Field, ErrorMessage } from 'vee-validate';
-import * as yup from 'yup'; // For validation schema
-/* eslint-disable */
+import * as yup from 'yup'; 
 export default {
-  /* eslint-disable */
   components: {
     Form,
     Field,
@@ -44,9 +39,9 @@ export default {
   data(){
     return {
       schema: yup.object().shape({
-        username: yup.string().required('Username is requried'),
-        password: yup.string().required('password is requried'),
-        email: yup.string().required('email is requried')
+        username: yup.string().required('Username is required'),
+        password: yup.string().required('password is required'),
+        email: yup.string().required('email is required')
       })
     }
   },
