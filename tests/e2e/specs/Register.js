@@ -7,6 +7,10 @@ describe('Register E2E test suite', () => {
     cy.visit('http://localhost:8080/#/register')
   })
 
+  afterEach(() => {
+    cy.end()
+  })
+
   it('Display validatin erros for empty fields', () => {
     cy.get('button').click()
 

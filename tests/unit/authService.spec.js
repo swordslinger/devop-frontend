@@ -30,7 +30,7 @@ describe('AuthService', () => {
         }
 
         // Intercept post request at registration endpoint and respond with status code and message.
-        mock.onPost('http://localhost:8080/auth/register').reply(200, { message: 'Success' })
+        mock.onPost('http://localhost:3000/auth/register').reply(200, { message: 'Success' })
 
         // Pass dummy user into authService.register method to trigger intercept above.
         const RESPONSE = await authService.register(USER)
@@ -54,7 +54,7 @@ describe('AuthService', () => {
         }
 
         // Intercept post request at registration endpoint and respond with status code and message.
-        mock.onPost('http://localhost:8080/auth/register').reply(200, { message: 'Successs' })
+        mock.onPost('http://localhost:3000/auth/register').reply(200, { message: 'Successs' })
 
         // Pass dummy user into authService.register method to trigger intercept above.
         await authService.register(USER)
@@ -79,7 +79,7 @@ describe('AuthService', () => {
         }
 
         // Intercept post request at registration endpoint and respond with status code and message.
-        mock.onPost('http://localhost:8080/auth/register').reply(400, { message: 'Username is required' })
+        mock.onPost('http://localhost:3000/auth/register').reply(400, { message: 'Username is required' })
 
         // Pass dummy user with missing username into authService.register method to trigger error
         try {
@@ -100,7 +100,7 @@ describe('AuthService', () => {
         }
 
         // Intercept post request at registration endpoint and respond with status code and message.
-        mock.onPost('http://localhost:8080/auth/register').reply(400, { message: 'Email is required' })
+        mock.onPost('http://localhost:3000/auth/register').reply(400, { message: 'Email is required' })
 
         // Pass dummy user with missing email into authService.register method to trigger error
         try {
@@ -121,7 +121,7 @@ describe('AuthService', () => {
         }
 
         // Intercept post request at registration endpoint and respond with status code and message.
-        mock.onPost('http://localhost:8080/auth/register').reply(400, { message: 'Password is required' })
+        mock.onPost('http://localhost:3000/auth/register').reply(400, { message: 'Password is required' })
 
         // Pass dummy user with missing password into authService.register method to trigger error
         try {
@@ -144,7 +144,7 @@ describe('AuthService', () => {
         }
 
         // Intercept post request at registration endpoint and respond with status code and message.
-        mock.onPost('http://localhost:8080/auth/register').reply(500, { message: 'Server error' })
+        mock.onPost('http://localhost:3000/auth/register').reply(500, { message: 'Server error' })
 
         // Pass dummy user  into authService.register method to trigger error
         try {
