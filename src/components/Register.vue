@@ -1,5 +1,5 @@
 <template>
-  <Form @submit= "Register" :validation-schema="schema">
+  <Form @submit="Register" :validation-schema="schema">
     <div>
       <label for = "username">Username</label>
       <Field name = "username" type="text" />
@@ -42,12 +42,35 @@ export default {
         username: yup.string().required('Username is required'),
         password: yup.string().required('password is required'),
         email: yup.string().required('email is required')
-      })
+      }),
+      message:"",
+      successful:false,
+      loading: false,
     }
   },
   methods:{
-    Register(values){
-      console.log(values)
+    async Register(user){
+      console.log('Register method triggered with:', user)
+      this.message = ""
+      this.successful = false
+      this.loading = true
+
+      try{
+      this.$store.dispatch("auth/register", user).then(
+        (data) => {
+          console.log("Dispatching register action with:", user)
+          this.message = data.message
+          this.successful = true
+        },
+        (error) => {
+          console.log("Dispatching error", user)
+          this.message = (error.response && error.response.data && error.response.data.message) ||
+          error.message ||
+          error.toString()
+        this.successful = false
+        this.loading = false
+        }
+      )
     }
   }
 }

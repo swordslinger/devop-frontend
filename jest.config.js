@@ -4,11 +4,16 @@ module.exports = {
   preset: '@vue/cli-plugin-unit-jest',
 
   transform:{
-    '^.+\\.jsx?$': 'babel-jest'
+    '^.+\\.vue$': '@vue/vue3-jest',
+    '^.+\\.jsx?$': 'babel-jest',
+    '^.+\\.mjs$': 'babel-jest',
   },
 
   transformIgnorePatterns: [
-    'node_modules/(?!axios|other-package-with-esm)'
-  ],
+    'node_modules/(?!vee-validate|axios|other-package-with-esm)'
+ ],
+
+ moduleFileExtensions:['js', 'vue', 'json'],
+  testEnvironment: 'jsdom'
 
 }
