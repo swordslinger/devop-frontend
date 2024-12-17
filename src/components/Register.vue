@@ -49,18 +49,18 @@ export default {
     }
   },
   methods:{
-    async Register(user){
+    Register(user){
       console.log('Register method triggered with:', user)
       this.message = ""
       this.successful = false
       this.loading = true
 
-      try{
       this.$store.dispatch("auth/register", user).then(
         (data) => {
           console.log("Dispatching register action with:", user)
           this.message = data.message
           this.successful = true
+          this.loading = false
         },
         (error) => {
           console.log("Dispatching error", user)

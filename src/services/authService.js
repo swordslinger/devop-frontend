@@ -2,7 +2,7 @@
 import axios from 'axios'
 
 // BASE URL for login,logout and register.
-const AUTH_ENDPOINT = 'http://localhost:8080/auth'
+const AUTH_ENDPOINT = 'http://localhost:3000/auth'
 
 // Class for login, logout and register methods.
 class AuthService{
