@@ -7,4 +7,4 @@ const STORE = createStore({
   }
 })
 
-export default store
+export default STORE
