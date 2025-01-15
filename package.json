@@ -37,7 +37,8 @@
     "eslint-plugin-vue": "^8.0.3",
     "flush-promises": "^1.0.2",
     "jest": "^27.0.5",
-    "lint-staged": "^11.1.2"
+    "lint-staged": "^11.1.2",
+    "vuex-mock-store": "^0.1.0"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"

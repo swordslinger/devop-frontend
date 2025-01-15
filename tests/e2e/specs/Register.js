@@ -9,7 +9,7 @@ describe('Register E2E test suite', () => {
 
 
 
-  it('Display validatin erros for empty fields', () => {
+  it('Display validation errors for empty fields', () => {
     cy.get('button').click()
 
 
