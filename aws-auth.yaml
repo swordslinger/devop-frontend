@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aws-auth
+  namespace: kube-system
+data:
+  mapRoles: |
+    - rolearn: arn:aws:iam::148761679855:role/Node-Group-Role
+      username: swordslinger
+      groups:
+        - system:masters
+  mapUsers: |
+    - userarn: arn:aws:iam::148761679855:user/swordslinger
+      username: swordslinger
+      groups:
+        - system:masters

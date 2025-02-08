@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devop-frontend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: devop-frontend
+  template:
+    metadata:
+      labels:
+        app: devop-frontend
+    spec:
+      containers:
+      - name: devop-frontend
+        image: 148761679855.dkr.ecr.eu-north-1.amazonaws.com/devop-frontend:latest
+        ports:
+        - containerPort: 80  
