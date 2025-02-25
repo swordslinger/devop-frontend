@@ -106,7 +106,7 @@ jobs:
 
       - name: Install kubectl
         run: |
-         curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.25.3/bin/linux/amd64/kubect
+         curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.25.3/bin/linux/amd64/kubectl
          chmod +x ./kubectl
          sudo mv ./kubectl /usr/local/bin/kubectl
 
@@ -117,7 +117,7 @@ jobs:
       - name: Deploy to Kubernetes
         run: |
           kubectl apply -f deployment.yaml
-          kubectl rollout status deployment/
+          kubectl rollout status deployment/devop-frontend
       
       - name: Deployment vertifcation
         run: |
