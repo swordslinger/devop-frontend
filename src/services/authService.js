@@ -5,7 +5,7 @@ import axios from 'axios'
 // const AUTH_ENDPOINT = 'http://localhost:3000/auth'
 
 // BASE URL for login,logout and register. (Production)
-const AUTH_ENDPOINT = 'http://k8s-default-devopfro-3395a783d4-103de2cc0dd57654.elb.eu-north-1.amazonaws.com '
+const AUTH_ENDPOINT = 'http://k8s-default-devopfro-3395a783d4-103de2cc0dd57654.elb.eu-north-1.amazonaws.com'
 
 
 
