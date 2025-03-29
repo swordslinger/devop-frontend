@@ -41,6 +41,7 @@ export default {
         return {
         message:"",
         loading: false,
+        successful: false,
         schema,
         }
     },
@@ -49,11 +50,11 @@ export default {
             return this.$store.state.auth.status.loggedIn
         },
     },
-    created (){
-        if (this.loggedIn) {
-            this.$router.push("/chat");
-        }
-    },
+   // created (){
+     //   if (this.loggedIn) {
+       //     this.$router.push("/");
+       // }
+   // },
     methods:{
         Login(user){
         console.log('Login method triggered with:', user)
@@ -62,7 +63,7 @@ export default {
         this.$store.dispatch("auth/login", user).then(
             () => {
             console.log("Dispatching login action with:", user)
-                this.$router.push("/chat");
+                this.$router.push("/");
             },
             (error) => {
             console.log("Error in login action:", error)
