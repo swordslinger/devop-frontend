@@ -3,16 +3,16 @@
     <div>
         <h2>Chat Rooms</h2>
 
-     <!--   <div v-if="chatRooms.length > 0">
-     <!--       <div v-for="room in chatRooms" :key="room.id">
-       <!--         {{ room.name }}
-         <!--       <button @click="joinRoom(room.id)">Join</button>
-           <!--      <button @click="leaveRoom(room.id)">Leave</button> -->
-          <!--       <button @click="deleteRoom(room.id)">Delete</button> -->
-              <!--   <button @click="navigateToRoom(room.id)">Navigate</button> -->
-     <!--        </div>
+        <div v-if="chatRooms.length > 0">
+            <div v-for="room in chatRooms" :key="room.id">
+                {{ room.name }}
+                <button @click="joinRoom(room.id)">Join</button>
+                 <button @click="leaveRoom(room.id)">Leave</button> 
+                 <button @click="deleteRoom(room.id)">Delete</button> 
+                 <button @click="navigateToRoom(room.id)">Navigate</button> 
+             </div>
         </div>
-        <div v-else> No chat rooms available </div> -->
+        <div v-else> No chat rooms available </div> 
 
         <Form @submit="createChatRoom" :validation-schema="schema">
             <div>
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import { chatRoom } from '@/store/chatRoomModule';
 import { Form, Field, ErrorMessage } from 'vee-validate';
 import * as yup from 'yup';
 
@@ -45,6 +46,7 @@ export default {
     },
     data(){
         return {
+            chatRooms: [],
             schema: yup.object().shape({
                 roomName: yup.string().required('Room name is required'),
                 roomDescription: yup.string().required('Room description is required')
@@ -57,8 +59,22 @@ export default {
     },
     created(){
         console.log('Auth state on created', this.$store.state.auth)
+        this.fetchChatRooms()
     },
     methods: {
+        fetchChatRooms() {
+            this.loading = true
+            this.$store.dispatch("chatRoom/getAllChatRooms").then(
+                (data) => {
+                    this.chatRooms = data
+                    this.loading = false
+                },
+                (error) => {
+                    console.error("Error fetching chat rooms:", error)
+                    this.loading = false
+                }
+            )
+        },
         createChatRoom(roomData) {
             this.message = ""
             this.successful = false
