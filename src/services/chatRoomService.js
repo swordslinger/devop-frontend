@@ -28,3 +28,5 @@ class ChatRoomService {
         return axios.delete(CHATROOM_ENDPOINT + chatRoomId, { headers: authHeader() })
     }
 }
+
+export default new ChatRoomService()

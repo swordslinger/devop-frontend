@@ -1,10 +1,13 @@
 import authService  from "@/services/authService";
 
 const user = JSON.parse(localStorage.getItem('user')) // get user from local storage
-const intialState = user
-    ? {status : {loggedIn : false}, user : null}
-    : {status : {loggedIn : true}, user} // if user exists, set loggedIn to true
+console.log("user from storage", user)
 
+const intialState = user
+    ? {status : {loggedIn : true}, user} // if user exists, set loggedIn to true
+    : {status : {loggedIn : false}, user: null} // if user exists, set loggedIn to true
+
+console.log("Initial state", intialState)
 
 // module for user registration with vuex.
 export const auth = {
@@ -31,8 +34,16 @@ export const auth = {
             // on sucesssful login passes user object to registerSuccess mutation.
             return authService.login(user).then(
                 response => {
-                    commit('loginSuccess', response.data)
-                    return Promise.resolve(response.data)
+                    console.log("Login response", response.data)
+
+                    if(response && response.data.username){
+                        commit('loginSuccess', response.data)
+                        return Promise.resolve(response.data)
+                    } else {
+                        console.log("error", response.data)
+                        commit('loginFailure')
+                        return Promise.reject("Login failed")
+                    }
                 },
                 // On failed login, registerFailure mutation is called and an error is passed to the invoker of the authModule.
                 error => {
@@ -60,8 +71,13 @@ export const auth = {
             console.log("Register fail")
         },
         loginSuccess(state, user){
+            if(!user){
+                console.log("User is null")
+                return
+            }
             state.user = user
             state.status.loggedIn = true
+            localStorage.setItem('user', JSON.stringify(user)) // set user in local storage
             console.log("Login sucess")
         },
         loginFailure(state){

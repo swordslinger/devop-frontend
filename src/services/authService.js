@@ -24,16 +24,21 @@ class AuthService{
 
    login(user){
     // Sends the users attributes to the login endpoint and returns a http response.
+    console.log("Login user", user)
     return axios.post(AUTH_ENDPOINT2 + '/login', {
         username: user.username,
         password: user.password
     })
     .then(response => {
+        console.log("Login  successs response", response.data)
         if(response.data.accessToken){
             localStorage.setItem('user', JSON.stringify(response.data))
         }
-    return response.data
-   })
+    return response
+   }).catch(error => {
+        console.log("Login error", error)
+        return error
+    })
 }
 
 logout(){
