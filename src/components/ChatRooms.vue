@@ -62,6 +62,18 @@ export default {
         this.fetchChatRooms()
     },
     methods: {
+        navigateToRoom(roomId){
+            this.loading = true
+            try {
+                this.$router.push(`/chatroom/${roomId}`)
+            }catch (error){
+                console.error("Error navigating to chat room:", error)
+                this.message = "Failed to navigate to chat room."
+                this.loading = false
+            }finally {
+                this.loading = false
+            }
+        },
         joinRoom(roomId){
             this.loading = true,
             this.$store.dispatch("chatRoom/joinChatRoom", roomId).then(()=>{
