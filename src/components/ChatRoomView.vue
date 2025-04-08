@@ -4,8 +4,19 @@
     <div v-else-if="error">{{ error }}</div>
     <div v-else>
         <div>
-            <h3> {{ chatRoomData.name }} </h3>
-            <p> {{ chatRoomData.description }}</p>
+            <h3>ChatRoom : {{ chatRoomData.name }} </h3>
+            <p> What this ChatRoom is about: {{ chatRoomData.description }}</p>
+        </div>
+
+        <div>
+            <div v-if="messages.length === 0">No messages yet.</div>
+            <div v-else>
+                <div v-for="msg in messages" :key="msg.id" class="message" :class="{'own-message': msg.username === currentUsername}">
+                    <div class="message-header">
+                        <strong>{{ msg.user.username }}:</strong> {{ msg.content }}
+                        </div>
+                </div>
+            </div>
         </div>
 
     
@@ -30,7 +41,6 @@ export default {
                 description: '',
                 createdBy: '',
             },
-            messages: [],
             newMessage: "",
             WebSocket: null,
             loading: true,
@@ -43,6 +53,9 @@ export default {
     computed: {
         currentUsername() {
             return this.$store.state.auth.user.username
+        },
+        messages() {
+            return this.$store.state.message.messages
         }
     },
     created() {
@@ -54,6 +67,16 @@ export default {
         // this.disconnectWebSocket()
     },
     methods: {
+        fetchMessages() {
+            this.$store.dispatch("message/getRoomMessages", this.chatRoomId).then((data) => {
+                console.log("Fetched messages:", this.messages.length)
+            }, (error) => {
+                this.error = (error.response && error.response.data && error.response.data.message) ||
+                    error.message ||
+                    "Failed to load messages"
+                console.error("Error fetching messages:", error)
+            })
+        },
         sendMessage() {
             if (!this.newMessage.trim() || this.sendingMessage) {
                 return
@@ -70,23 +93,23 @@ export default {
 
             }
 
+            const messageContent = this.newMessage.trim()
+            this.newMessage = ""
+
+
             this.$store.dispatch("message/sendMessage", messageData)
                 .then(() => {
-                    this.newMessage = ""
                     this.message = "message sent successfuly",
-                        this.successful = true
+                    this.successful = true
 
-                    this.messages.push({
-                        ...messageData,
-                        id: `temp-${Date.now()}`
-
-                    })
                 }).catch((error) => {
                             this.message = (error.response && error.response.data && error.response.data.message) ||
                                 error.message ||
                                 "Failed to send message"
                             this.successful = false
                             console.error("Error sending message: ", error)
+
+                            this.newMessage = messageContent
                         })
                     .finally(()=> {
                         this.sendingMessage = false
@@ -94,10 +117,9 @@ export default {
                 },
 
         fetchChatRoomDetails() {
-
             this.$store.dispatch("chatRoom/getChatRoomById", this.chatRoomId).then((data) => {
                 this.chatRoomData = data
-                //this.fetchMessages()
+                this.fetchMessages()
                 //                            
             }, (error) => {
                 this.error = (error.response && error.response.data && error.response.data.message) ||

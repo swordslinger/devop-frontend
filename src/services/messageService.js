@@ -8,6 +8,10 @@ class MessageService {
         const {chatRoomId} = message
         return axios.post(`${API_URL}/room/${chatRoomId}`, {content: message.content},{ headers: authHeader() })
     }
+
+    getRoomMessages(chatRoomId){
+        return axios.get(`${API_URL}/room/${chatRoomId}`, { headers: authHeader() })
+    }
 }
 
 export default new MessageService()
