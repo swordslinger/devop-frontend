@@ -62,6 +62,59 @@ export default {
         this.fetchChatRooms()
     },
     methods: {
+        joinRoom(roomId){
+            this.loading = true,
+            this.$store.dispatch("chatRoom/joinChatRoom", roomId).then(()=>{
+                this.message = "Joined chat room successfully!"
+                this.successful = true
+                this.loading = false
+                this.fetchChatRooms
+            }).catch((error) => {
+                this.message = (error.response && error.response.data &&  error.response.data.message) || 
+                    error.message || 
+                    error.toString()
+                this.successful = false
+                this.loading = false
+            })
+        },
+        leaveRoom(roomId){
+            this.loading = true
+
+            this.$store.dispatch("chatRoom/leaveChatRoom", roomId).then(()=>{
+                this.message = "Left chat room successfully!"
+                this.successful = true
+                this.loading = false
+                this.fetchChatRooms
+            }).catch((error) => {
+                this.message = (error.response && error.response.data &&  error.response.data.message) || 
+                    error.message || 
+                    error.toString()
+                this.successful = false
+                this.loading = false
+            })
+        },
+        deleteRoom(roomId){
+            this.loading = true
+
+            this.$store.dispatch("chatRoom/deleteChatRoom", roomId).then(
+                () => {
+                    this.message = "Chat room deleted successfully!"
+                    this.successful = true
+                    this.loading = false
+                    this.fetchChatRooms()
+                },
+                (error) => {
+                    this.message = (error.response && error.response.data &&  error.response.data.message) || 
+                        error.message || 
+                        error.toString()
+                    this.successful = false
+                    this.loading = false
+                }
+            )
+
+
+
+        },
         fetchChatRooms() {
             this.loading = true
             this.$store.dispatch("chatRoom/getAllChatRooms").then(
