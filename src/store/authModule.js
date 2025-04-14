@@ -2,10 +2,11 @@ import authService  from "@/services/authService";
 
 const user = JSON.parse(localStorage.getItem('user')) // get user from local storage
 console.log("user from storage", user)
+const token = user?.accessToken || localStorage.getItem('token') // get token from local storage
 
 const intialState = user
-    ? {status : {loggedIn : true}, user} // if user exists, set loggedIn to true
-    : {status : {loggedIn : false}, user: null} // if user exists, set loggedIn to true
+    ? {status : {loggedIn : true}, user, token} // if user exists, set loggedIn to true
+    : {status : {loggedIn : false}, user: null, token: null} // if user exists, set loggedIn to true
 
 console.log("Initial state", intialState)
 
@@ -77,7 +78,10 @@ export const auth = {
             }
             state.user = user
             state.status.loggedIn = true
+            state.token = user.token || user.accessToken // set token in state
+
             localStorage.setItem('user', JSON.stringify(user)) // set user in local storage
+            localStorage.setItem('token', state.token) // set token in local storage
             console.log("Login sucess")
         },
         loginFailure(state){

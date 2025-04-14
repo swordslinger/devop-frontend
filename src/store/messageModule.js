@@ -57,6 +57,10 @@ export const message = {
         getRoomMessagesFailure(state){
             state.messages = null
             console.log("get room messages failure")
+        },
+        addMessage(state, message){
+            state.messages.push(message)
+            console.log("add message success")
         }
     }
 }

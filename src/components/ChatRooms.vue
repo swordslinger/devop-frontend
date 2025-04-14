@@ -133,7 +133,7 @@ export default {
                 (data) => {
                     this.chatRooms = data
                     this.loading = false
-                },
+                } ,
                 (error) => {
                     console.error("Error fetching chat rooms:", error)
                     this.loading = false
