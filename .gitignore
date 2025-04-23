@@ -16,6 +16,15 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# Terraform
+.terraform/
+terraform/.terraform/
+terraform/.terraform/**
+*.tfstate
+*.tfstate.*
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
+
 # Editor directories and files
 .idea
 .vscode

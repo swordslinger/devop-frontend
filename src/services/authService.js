@@ -2,11 +2,11 @@
 import axios from 'axios'
 
 // BASE URL for login,logout and register. (TEST)
-const AUTH_ENDPOINT = 'http://localhost:3000/auth'
-const AUTH_ENDPOINT2 = 'http://localhost:3001/auth'
+// const AUTH_ENDPOINT = 'http://localhost:3000/auth'
+// const AUTH_ENDPOINT2 = 'http://localhost:3001/auth'
 
 // BASE URL for login,logout and register. (Production)
-//const AUTH_ENDPOINT = 'http://k8s-default-devopfro-3395a783d4-103de2cc0dd57654.elb.eu-north-1.amazonaws.com'
+const AUTH_ENDPOINT = '/auth'
 
 
 
@@ -25,7 +25,7 @@ class AuthService{
    login(user){
     // Sends the users attributes to the login endpoint and returns a http response.
     console.log("Login user", user)
-    return axios.post(AUTH_ENDPOINT2 + '/login', {
+    return axios.post(AUTH_ENDPOINT + '/login', {
         username: user.username,
         password: user.password
     })

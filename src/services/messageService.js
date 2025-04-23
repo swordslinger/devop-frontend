@@ -1,7 +1,9 @@
 import axios from 'axios'
 import authHeader from './authHeader'
 
-const API_URL = 'http://localhost:3002/auth'
+// const API_URL = 'http://localhost:3002/auth'
+const API_URL = '/auth/'
+
 
 class MessageService {
     sendMessage(message){

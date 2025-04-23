@@ -1,7 +1,7 @@
 import axios from 'axios'
 import authHeader from './authHeader'
 
-const CHATROOM_ENDPOINT = 'http://localhost:3002/auth/'
+const CHATROOM_ENDPOINT = '/auth/'
 
 class ChatRoomService {
     createChatRoom(chatRoom) {

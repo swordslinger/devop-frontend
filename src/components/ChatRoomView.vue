@@ -73,10 +73,20 @@ export default {
             const token = this.$store.state.auth.token || (this.$store.auth.user && this.$store.auth.user.accessToken)
             console.log('Auth State:', this.$store.state.auth)
             console.log('WebSocket token:', token)
-            this.WebSocket = io(`http://localhost:3002/`, {
+
+            // development
+           // this.WebSocket = io(`http://localhost:3002/`, {
+           //     auth: { token },
+           //     path: '/socket.io'
+           // })
+
+           // production
+            this.WebSocket = io(window.location.origin, {
                 auth: { token },
-                path: '/socket.io'
+                path: '/ws/socket.io'
             })
+
+
             
             this.WebSocket.on('connect', () => {
                 console.log('Connected to WebSocket server')
