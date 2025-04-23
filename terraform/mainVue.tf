@@ -40,7 +40,7 @@ resource "kubernetes_deployment" "vue_frontend" {
 
         spec {
             container {
-                image  = "${var.ecr_repo_name}:latest"
+                image  = "${var.ecr_repo_name}"
                 name = "vue-frontend"
 
                 resources {

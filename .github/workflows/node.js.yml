@@ -122,7 +122,7 @@ jobs:
       - name: Delete Existing Resources
         run: |
               aws eks update-kubeconfig --name devops-eks --region ${{ secrets.AWS_REGION }}
-              kubectl delete deployment vue_frontend --ignore-not-found=true 
+              kubectl delete deployment  vue-frontend service vue-frontend --ignore-not-found=true 
               echo "Waiting 30 seconds for resources to be fully deleted..."
               sleep 30
         env:
