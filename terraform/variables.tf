@@ -3,6 +3,7 @@ variable "vpc_id" {
     type        = string
 }
 
+
 variable "ecr_repo_name" {
     description = "Url of the ECR repository"
     type        = string

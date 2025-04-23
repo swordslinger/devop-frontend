@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 provider "kubernetes" {
-    host                   = module.eks.cluster_endpoint
+    host                   = data.aws_eks_cluster.existing_cluster.endpoint
     insecure               = true
     exec {
         api_version = "client.authentication.k8s.io/v1beta1"
@@ -12,108 +12,15 @@ provider "kubernetes" {
     }
 }
 
-provider "helm" {
-    kubernetes {
-        host                  = module.eks.cluster_endpoint
-        insecure               = true
-
-        exec {
-            api_version = "client.authentication.k8s.io/v1beta1"
-            command     = "aws"
-            args        = ["eks", "get-token", "--cluster-name", local.cluster_name]
-        }
-    }
-}
-
 locals {
     cluster_name = "devops-eks"
 }
 
-data "aws_vpc" "existing"{
-    id = var.vpc_id
-}
-
-data "aws_subnets" "public" {
-    filter {
-      name = "vpc-id"
-        values = [var.vpc_id]
-    }
-    filter {
-        name = "map-public-ip-on-launch"
-        values = ["true"]
-    }
-}
-
-module "eks"{
-    source = "terraform-aws-modules/eks/aws"
-    version = "~> 19.0"
-
-    cluster_name    = local.cluster_name
-    cluster_version = "1.31"
-
-    vpc_id     = var.vpc_id
-    subnet_ids = data.aws_subnets.public.ids
-
-    cluster_endpoint_public_access  = true
-    cluster_endpoint_private_access = true  # Keep private access too for security
-
-    eks_managed_node_groups = {
-        main = {
-            name = "node-group-1"
-            instance_types = ["t3.medium"]
-            min_size     = 2
-            max_size     = 5
-            desired_size = 2
-        }
-    }
-}
-
-module "load_balancer_controller_irsa_role" {
-  source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-
-  role_name                              = "load-balancer-controller"
-  attach_load_balancer_controller_policy = true
-
-  oidc_providers = {
-    main = {
-        provider_arn = module.eks.oidc_provider_arn
-        namespace_service_accounts = ["kube-system:aws-load-balancer-controller"]
-    }
-  }
-}
-
-resource "helm_release" "aws_load_balancer_controller" {
-    name = "aws-load-balancer-controller"
-    repository = "https://aws.github.io/eks-charts"
-    chart = "aws-load-balancer-controller"
-    namespace = "kube-system"
-
-
-    set {
-        name = "clusterName"
-        value = local.cluster_name
-    }
-    
-    set {
-        name = "serviceAccount.create"
-        value = "true"
-    }
-
-    set {
-        name = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
-        value = module.load_balancer_controller_irsa_role.iam_role_arn
-    }
-
-    depends_on = [ module.eks ]
-}
-
-resource "time_sleep" "wait_for_cluster" {
-  depends_on = [module.eks]
-  create_duration = "180s"
+data "aws_eks_cluster" "existing_cluster" {
+    name = local.cluster_name
 }
 
 resource "kubernetes_deployment" "vue_frontend" {
-    depends_on = [ time_sleep.wait_for_cluster] 
   metadata {
     name      = "vue-frontend"
     labels = {
@@ -172,7 +79,6 @@ resource "kubernetes_deployment" "vue_frontend" {
 }
 
 resource "kubernetes_service" "vue_frontend" {
-    depends_on = [ time_sleep.wait_for_cluster] 
     metadata {
         name = "vue-frontend"
     }
@@ -193,7 +99,6 @@ resource "kubernetes_service" "vue_frontend" {
 }
 
 resource "kubernetes_horizontal_pod_autoscaler_v2" "vue_frontend" {
-        depends_on = [ time_sleep.wait_for_cluster] 
     metadata {
         name = "vue-frontend-hpa"
     }
@@ -325,24 +230,5 @@ resource "kubernetes_ingress_v1" "vue_frontend" {
             }
         }
     }
-
-    depends_on = [helm_release.aws_load_balancer_controller, time_sleep.wait_for_cluster] 
-
-  
 }
 
-resource "aws_ec2_tag" "cluster_tag" {
-    for_each = toset(data.aws_subnets.public.ids)
-    resource_id = each.value
-    key = "kubernetes.io/cluster/${local.cluster_name}"
-    value = "shared"
-  
-}
-
-resource "aws_ec2_tag" "elb_tag" {
-    for_each = toset(data.aws_subnets.public.ids)
-    resource_id = each.value
-    key = "kubernetes.io/role/elb"
-    value = "1"
-  
-}
