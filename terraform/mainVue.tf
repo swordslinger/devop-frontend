@@ -1,6 +1,3 @@
-provider "aws" {
-    region = "eu-north-1"
-}
 
 provider "kubernetes" {
     host                   = data.aws_eks_cluster.existing_cluster.endpoint
@@ -12,9 +9,6 @@ provider "kubernetes" {
     }
 }
 
-locals {
-    cluster_name = "devops-eks"
-}
 
 data "aws_eks_cluster" "existing_cluster" {
     name = local.cluster_name
