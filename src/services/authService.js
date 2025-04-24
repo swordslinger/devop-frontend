@@ -25,7 +25,7 @@ class AuthService{
    login(user){
     // Sends the users attributes to the login endpoint and returns a http response.
     console.log("Login user", user)
-    return axios.post(AUTH_ENDPOINT2 + '/login', {
+    return axios.post(AUTH_ENDPOINT + '/login', {
         username: user.username,
         password: user.password
     })
