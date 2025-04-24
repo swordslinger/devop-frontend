@@ -92,8 +92,10 @@ export const auth = {
         logout(state){
             state.user = null
             state.status.loggedIn = false
+            state.token = null // set token in state to null}
+            localStorage.removeItem('user') // remove user from local storage
+            localStorage.removeItem('token') // remove token from local storage
             console.log("Logout")
-        }
+        },
     }
-    
 }

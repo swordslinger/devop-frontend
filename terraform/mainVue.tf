@@ -185,33 +185,9 @@ resource "kubernetes_ingress_v1" "vue_frontend" {
                         }
                     }
                 }
-                                path{
-                    path = "/auth/room"
-                    path_type = "Prefix"
-                    backend {
-                        service {
-                            name = "chat-service"
-                            port {
-                                number = 80
-                            }
-                        }
-                    }
-                }
                 path{
-                    path = "/auth/create"
+                    path = "/chatRoom"
                     path_type = "Prefix"
-                    backend {
-                        service {
-                            name = "chat-service"
-                            port {
-                                number = 80
-                            }
-                        }
-                    }
-                }
-                 path{
-                    path = "/auth/"
-                    path_type = "Exact"
                     backend {
                         service {
                             name = "chat-service"

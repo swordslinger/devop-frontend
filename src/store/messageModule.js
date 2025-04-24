@@ -51,16 +51,38 @@ export const message = {
             console.log("send message failure")
         },
         getRoomMessagesSuccess(state, messages){
-            state.messages = messages.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
-            console.log("get room messages success")
-        },
+            if(Array.isArray(messages)){
+                state.messages = messages.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+                console.log("get room messages success")
+            } else {
+                console.log("expected messages array but got:: ", messages)
+                    if(messages && typeof messages === 'object'){
+                        const messageArray = messages.message || messages.data || []
+                    if(Array.isArray(messageArray)){
+                        state.messages = messageArray.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+                    }else {
+                        state.messages = []
+                    }
+            } else {
+                state.messages = []
+            }
+
+        }
+
+    },
         getRoomMessagesFailure(state){
-            state.messages = null
+            state.messages = []
             console.log("get room messages failure")
         },
         addMessage(state, message){
             state.messages.push(message)
             console.log("add message success")
+        },
+        removeMessage(state, messageId){
+            if(Array.isArray(state.messages)){
+                state.messages = state.messages.filter(message => message.id !== messageId)
+                console.log("Message removed")
+            }
         }
     }
 }

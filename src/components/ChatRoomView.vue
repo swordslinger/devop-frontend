@@ -11,9 +11,10 @@
         <div>
             <div v-if="messages.length === 0">No messages yet.</div>
             <div v-else>
-                <div v-for="msg in messages" :key="msg.id" class="message" :class="{'own-message': msg.username === currentUsername}">
+                <div v-for="msg in messages" :key="msg.id" class="message" :class="{'own-message': msg.user.username === currentUsername}">
                     <div class="message-header">
                         <strong>{{ msg.user.username }}:</strong> {{ msg.content }}
+                        <button v-if="msg.user.username === currentUsername" @click="deleteMessage(msg.id)" class="delete-button">Delete</button>
                         </div>
                 </div>
             </div>
@@ -31,6 +32,7 @@
 </template>
 
 <script>
+import { message } from '@/store/messageModule'
 import io from 'socket.io-client'
 export default {
     name: 'ChatRoomView',
@@ -75,16 +77,16 @@ export default {
             console.log('WebSocket token:', token)
 
             // development
-           // this.WebSocket = io(`http://localhost:3002/`, {
-           //     auth: { token },
-           //     path: '/socket.io'
-           // })
+            this.WebSocket = io(`http://localhost:3002`, {
+                auth: { token },
+               path: '/ws/socket.io'
+            })
 
            // production
-            this.WebSocket = io(window.location.origin, {
-                auth: { token },
-                path: '/ws/socket.io'
-            })
+           // this.WebSocket = io(window.location.origin, {
+           //     auth: { token },
+           //     path: '/ws/socket.io'
+           // })
 
 
             
@@ -117,6 +119,11 @@ export default {
 
             this.WebSocket.on('disconnect', () => {
                 console.log('Disconnected from WebSocket server')
+            })
+
+            this.WebSocket.on('message-deleted', (messageId) => {
+                console.log('Message deleted:', messageId)
+                this.$store.commit('message/removeMessage', messageId)
             })
 
 
@@ -199,6 +206,23 @@ export default {
             }
             ).finally(() => {
                 this.loading = false
+            })
+        },
+        deleteMessage(messageId){
+            this.WebSocket.emit('delete-message',{
+                messageId: messageId,
+                roomId: this.chatRoomId
+            }, (res) => {
+                if (res && res.success) {
+                    this.message = "Message deleted successfully!"
+                    this.successful = true
+                    console.log("Message deleted successfully:", res.messageId)
+                } else {
+                    this.message = "Failed to delete message."
+                    this.successful = false
+                    console.log("failed to deleted message of id:", res.messageId)
+
+                }
             })
         }
 

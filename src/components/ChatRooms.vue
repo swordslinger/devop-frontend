@@ -31,6 +31,9 @@
             </div>
         </Form>
     </div>
+    <div v-if="message" :class="successful ? 'alert-success' : 'alert-danger'">
+    {{ message }}
+  </div>
 </template>
 
 <script>
