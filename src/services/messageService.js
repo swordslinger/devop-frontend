@@ -1,8 +1,8 @@
 import axios from 'axios'
 import authHeader from './authHeader'
 
- const API_URL = 'http://localhost:3002/chatRoom/'
- //const API_URL = '/chatroom/'
+ //const API_URL = 'http://localhost:3002/chatRoom/'
+ const API_URL = '/chatroom/'
 
 
 class MessageService {

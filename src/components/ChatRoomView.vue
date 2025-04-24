@@ -77,16 +77,16 @@ export default {
             console.log('WebSocket token:', token)
 
             // development
-            this.WebSocket = io(`http://localhost:3002`, {
-                auth: { token },
-               path: '/ws/socket.io'
-            })
-
-           // production
-           // this.WebSocket = io(window.location.origin, {
+           /// this.WebSocket = io(`http://localhost:3002`, {
            //     auth: { token },
-           //     path: '/ws/socket.io'
+           //    path: '/ws/socket.io'
            // })
+
+            production
+           this.WebSocket = io(window.location.origin, {
+                auth: { token },
+                path: '/ws/socket.io'
+            })
 
 
             

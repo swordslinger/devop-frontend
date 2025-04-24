@@ -2,11 +2,11 @@
 import axios from 'axios'
 
 // BASE URL for login,logout and register. (TEST)
- const AUTH_ENDPOINT = 'http://localhost:3000/auth'
- const AUTH_ENDPOINT2 = 'http://localhost:3001/auth'
+// const AUTH_ENDPOINT = 'http://localhost:3000/auth'
+ //const AUTH_ENDPOINT2 = 'http://localhost:3001/auth'
 
 // BASE URL for login,logout and register. (Production)
-//const AUTH_ENDPOINT = '/auth'
+const AUTH_ENDPOINT = '/auth'
 
 
 
