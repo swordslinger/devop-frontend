@@ -78,12 +78,12 @@ export default {
             }
         },
         joinRoom(roomId){
-            this.loading = true,
+            this.loading = true;
             this.$store.dispatch("chatRoom/joinChatRoom", roomId).then(()=>{
                 this.message = "Joined chat room successfully!"
                 this.successful = true
                 this.loading = false
-                this.fetchChatRooms
+                this.fetchChatRooms()
             }).catch((error) => {
                 this.message = (error.response && error.response.data &&  error.response.data.message) || 
                     error.message || 
@@ -99,7 +99,7 @@ export default {
                 this.message = "Left chat room successfully!"
                 this.successful = true
                 this.loading = false
-                this.fetchChatRooms
+                this.fetchChatRooms()
             }).catch((error) => {
                 this.message = (error.response && error.response.data &&  error.response.data.message) || 
                     error.message || 

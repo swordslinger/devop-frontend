@@ -2,7 +2,7 @@ import axios from 'axios'
 import authHeader from './authHeader'
 
 // production
- const CHATROOM_ENDPOINT = '/chatroom/'
+ const CHATROOM_ENDPOINT = '/chatRoom'
 
 //const CHATROOM_ENDPOINT = 'http://localhost:3002/chatRoom/'
 
