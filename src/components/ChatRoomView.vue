@@ -82,7 +82,8 @@ export default {
            //    path: '/ws/socket.io'
            // })
 
-            production
+        //production
+
            this.WebSocket = io(window.location.origin, {
                 auth: { token },
                 path: '/ws/socket.io'
