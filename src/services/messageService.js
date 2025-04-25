@@ -1,3 +1,4 @@
+// This class was for testing/fall back to send messages restfully before implementing a websockets.
 import axios from 'axios'
 import authHeader from './authHeader'
 

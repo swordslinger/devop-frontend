@@ -7,6 +7,7 @@ import ChatRoom from '@/components/ChatRooms.vue'
 import ChatRoomView from '@/components/ChatRoomView.vue'
 
 
+// How the user naviagetes differnt parts of the application.
 const routes = [
   {
     path: "/",

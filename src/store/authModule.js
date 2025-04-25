@@ -12,10 +12,8 @@ console.log("Initial state", intialState)
 
 // module for user registration with vuex.
 export const auth = {
-    // state and actions are scoped.
     namespaced: true,
     state: intialState,
-    // methods for commiting mutations.
     actions: {
         register({ commit }, user){
             // on sucesssful registration passes user object to registerSuccess mutation.
@@ -24,7 +22,7 @@ export const auth = {
                 commit('registerSuccess', response.data)
                 return Promise.resolve(response.data)
             },
-            // On failed registration, registerFailure mutation is called and an error is passed to the invoker of the authModule.
+            // On failed registration, registerFailure mutation is called and an error is passed to the register component.
             error => {
                 commit('registerFailure')
                 return Promise.reject(error)
@@ -46,7 +44,7 @@ export const auth = {
                         return Promise.reject("Login failed")
                     }
                 },
-                // On failed login, registerFailure mutation is called and an error is passed to the invoker of the authModule.
+                // On failed login, registerFailure mutation is called and an error is passed to the login component.
                 error => {
                     commit('loginFailure')
                     return Promise.reject(error)
@@ -61,7 +59,7 @@ export const auth = {
     },
 
 
-    // Changes state of vuex store based on Sucessful or Unsucessful registration/
+    // Changes state of vuex store based on Sucessful or Unsucessful login/registration/logout.
     mutations: {
         registerSuccess(state, user){
             state.user = user

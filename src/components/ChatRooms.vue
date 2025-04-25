@@ -3,6 +3,7 @@
     <div>
         <h2>Chat Rooms</h2>
 
+        <!-- Display existing chatrooms   -->
         <div v-if="chatRooms.length > 0">
             <div v-for="room in chatRooms" :key="room.id">
                 {{ room.name }}
@@ -12,8 +13,11 @@
                  <button @click="navigateToRoom(room.id)">Navigate</button> 
              </div>
         </div>
+
+        <!-- If no chatrooms exist display this message   -->
         <div v-else> No chat rooms available </div> 
 
+        <!-- Form to create a new chatroom   -->
         <Form @submit="createChatRoom" :validation-schema="schema">
             <div>
                 <label for="roomName">Room Name:</label>
@@ -31,16 +35,20 @@
             </div>
         </Form>
     </div>
+
+    <!-- Display success or error message after creating a room   -->
     <div v-if="message" :class="successful ? 'alert-success' : 'alert-danger'">
     {{ message }}
   </div>
 </template>
 
 <script>
+// Imports.
 import { chatRoom } from '@/store/chatRoomModule';
 import { Form, Field, ErrorMessage } from 'vee-validate';
 import * as yup from 'yup';
 
+// Register vee-validate components
 export default {
     components: {
         Form,
@@ -49,6 +57,7 @@ export default {
     },
     data(){
         return {
+            // Validation schema for the form.
             chatRooms: [],
             schema: yup.object().shape({
                 roomName: yup.string().required('Room name is required'),
@@ -60,11 +69,13 @@ export default {
         }
 
     },
+    // Fetch all chat rooms when the component is created.
     created(){
         console.log('Auth state on created', this.$store.state.auth)
         this.fetchChatRooms()
     },
     methods: {
+        // Enter a specfic chat room.
         navigateToRoom(roomId){
             this.loading = true
             try {
@@ -77,6 +88,7 @@ export default {
                 this.loading = false
             }
         },
+        // Join a specific chat room.
         joinRoom(roomId){
             this.loading = true;
             this.$store.dispatch("chatRoom/joinChatRoom", roomId).then(()=>{
@@ -92,6 +104,7 @@ export default {
                 this.loading = false
             })
         },
+        // Leave a specific chat room.
         leaveRoom(roomId){
             this.loading = true
 
@@ -108,6 +121,7 @@ export default {
                 this.loading = false
             })
         },
+        // Delete a specific chat room.
         deleteRoom(roomId){
             this.loading = true
 
@@ -126,10 +140,8 @@ export default {
                     this.loading = false
                 }
             )
-
-
-
         },
+        // Get all chat rooms from the store.
         fetchChatRooms() {
             this.loading = true
             this.$store.dispatch("chatRoom/getAllChatRooms").then(
@@ -143,6 +155,7 @@ export default {
                 }
             )
         },
+        // Create a new chat room.
         createChatRoom(roomData) {
             this.message = ""
             this.successful = false

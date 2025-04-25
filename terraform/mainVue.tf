@@ -1,4 +1,5 @@
 
+# Sets up the connectiong to kubernetes cluster using AWS credentials.
 provider "kubernetes" {
     host                   = data.aws_eks_cluster.existing_cluster.endpoint
     insecure               = true
@@ -9,11 +10,12 @@ provider "kubernetes" {
     }
 }
 
-
+# Looks up information about the existing EKS cluster.
 data "aws_eks_cluster" "existing_cluster" {
     name = local.cluster_name
 }
 
+# Creates the website application with backup copies
 resource "kubernetes_deployment" "vue_frontend" {
   metadata {
     name      = "vue-frontend"
@@ -23,14 +25,16 @@ resource "kubernetes_deployment" "vue_frontend" {
   }
 
   spec {
-    replicas = 2
+    replicas = 2    #Two copies created
 
+    # Indetifier for frontend
     selector {
         match_labels = {
             app = "vue-frontend"
         }
     }
 
+    # indetifier for container
     template {
         metadata {
             labels = {
@@ -38,6 +42,7 @@ resource "kubernetes_deployment" "vue_frontend" {
             }
         }
 
+        # gets container image from ECR configures computing resources.
         spec {
             container {
                 image  = "${var.ecr_repo_name}"
@@ -54,10 +59,12 @@ resource "kubernetes_deployment" "vue_frontend" {
                     }
                 }
 
+
                 port {
                     container_port = 80
                 }
 
+                // Checks the website is respodning
                 liveness_probe {
                   http_get {
                     path = "/*"
@@ -72,6 +79,7 @@ resource "kubernetes_deployment" "vue_frontend" {
     }
 }
 
+// Creates an internal address for the website.
 resource "kubernetes_service" "vue_frontend" {
     metadata {
         name = "vue-frontend"
@@ -92,6 +100,8 @@ resource "kubernetes_service" "vue_frontend" {
   
 }
 
+
+// Adds more website copies if traffic increases.
 resource "kubernetes_horizontal_pod_autoscaler_v2" "vue_frontend" {
     metadata {
         name = "vue-frontend-hpa"
@@ -117,6 +127,8 @@ resource "kubernetes_horizontal_pod_autoscaler_v2" "vue_frontend" {
     }
 }
 
+
+// Sets up public access to the website using aws.
 resource "kubernetes_ingress_v1" "vue_frontend" {
     metadata {
         name = "vue-frontend-ingress"
@@ -132,6 +144,7 @@ resource "kubernetes_ingress_v1" "vue_frontend" {
         }
     }
 
+    // Sets up the routing from the website to the backend services via different prefixes.
     spec {
         rule {
             http {

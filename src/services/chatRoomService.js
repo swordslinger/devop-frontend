@@ -6,6 +6,8 @@ import authHeader from './authHeader'
 
 //const CHATROOM_ENDPOINT = 'http://localhost:3002/chatRoom/'
 
+// Class for all chat room related methods.
+// This classes methods is for sending get,post delete http requests to the chat room microservice and its endpoints.
 class ChatRoomService {
     createChatRoom(chatRoom) {
         return axios.post(CHATROOM_ENDPOINT + 'create', chatRoom, { headers: authHeader() })

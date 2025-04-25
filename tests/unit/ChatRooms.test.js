@@ -1,3 +1,4 @@
+// Imports.
 import flushPromises from "flush-promises"
 import { createStore } from "vuex"
 import { mount } from "@vue/test-utils"
@@ -6,14 +7,18 @@ import  chatRooms  from "../../src/components/ChatRooms.vue"
 
 describe('Chatroom.vue', () => {
     test('should create  chatroom sucessfully', async () => {
+        
+        // Fake chatRoom action.
         const mockCreateChatRoom = vi.fn().mockResolvedValue({
             id: 'room-123',
             name: 'Test Room',
             description: 'This is a test room',
         })
 
+        // Fake getAllChatRooms action.
         const mockGetAllChatRooms = vi.fn().mockResolvedValue([])
 
+        // Create a Vuex store with the mocked actions and a logged in user.
         const store = createStore({
             modules: {
                 chatRoom: {
@@ -31,8 +36,10 @@ describe('Chatroom.vue', () => {
             },
         })
 
+        // Mock the router push method.
         const mockPush = vi.fn()
 
+        // Mount the component with the fake storem router mocks and fake vee-validate form.
         const wrapper = mount(chatRooms, {
             global: {
                 plugins: [store],
@@ -66,18 +73,23 @@ describe('Chatroom.vue', () => {
             }
         })
 
+        //Checks if getAllChatRooms action is called when the component is mounted.
         expect(mockGetAllChatRooms).toHaveBeenCalled()
 
+        // Simulate form submission
         wrapper.findComponent({ name: 'Form' }).vm.submit();
 
+        // Wait for all promises to resolve
         await flushPromises()
 
+        // Check if createChatRoom action is called with the correct parameters.
         expect(mockCreateChatRoom.mock.calls[0][1]).toEqual({
             name: 'Test Room',
             description: 'Test Description',
             createdBy: 'testuser',
         })
 
+        // Check if the state of the component is updated correctly.
         expect(wrapper.vm.message).toBe('Chat room created successfully!')
         expect(wrapper.vm.successful).toBe(true)
         expect(wrapper.vm.loading).toBe(false);

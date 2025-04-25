@@ -41,6 +41,7 @@ class AuthService{
     })
 }
 
+// Removes the user object from local storage.
 logout(){
     localStorage.removeItem('user')
 }
